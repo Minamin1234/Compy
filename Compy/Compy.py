@@ -58,14 +58,14 @@ class MCommand(object):
     def Run(self) -> void:
         while True:
             cmd:str = input()
-            args:List[str] = self.EncodeArgs(cmd)
+            args:List[str] = self.DecodeArgs(cmd)
             self.ExecuteCommand(args)
             if args[0] == "quit":
                 break
         return
 
 
-    def EncodeArgs(self,words:str) -> List[str]:
+    def DecodeArgs(self,words:str) -> List[str]:
         args:List[str] = [""]
         level:int = 0
         for w in words:
