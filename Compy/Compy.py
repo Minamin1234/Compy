@@ -1,5 +1,6 @@
 from typing import NoReturn as void
 from typing import List
+import math
 
 #コマンドにモジュールを組み込む為の拡張可能な基底クラス
 class MModule(object):
@@ -41,6 +42,62 @@ class MStd(MModule):
             self.ShowHelp()
         return
 
+class MMath(MModule):
+    def __init__(self) -> void:
+        self.ModuleName = "math"
+        self.Commands = [
+            "abs",
+            "sin",
+            "cos",
+            "tan",
+            "rad",
+            "pow",
+            "sqrt",
+            "max",
+            "min",
+            "pi",
+            "e",
+            "help"
+            ]
+        return
+
+    def ExecuteCommand(self, args: List[str]) -> void:
+        if len(args) >= 4:
+            val1:float
+            val2:float
+            print(args)
+            if args[2] != "":
+                val1 = float(args[2])
+            if args[3] != "":
+                val2 = float(args[3])
+
+        if args[1] == self.Commands[0]:
+            print(abs(val1))
+        elif args[1] == self.Commands[1]:
+            print(sin(val1))
+        elif args[1] == self.Commands[2]:
+            print(math.cos(val1))
+        elif args[1] == self.Commands[3]:
+            print(math.tan(val1))
+        elif args[1] == self.Commands[4]:
+            print(math.radians(val1))
+        elif args[1] == self.Commands[5]:
+            print(math.pow(val1,val2))
+        elif args[1] == self.Commands[6]:
+            print(math.sqrt(val1))
+        elif args[1] == self.Commands[7]:
+            print(max([val1,val2]))
+        elif args[1] == self.Commands[8]:
+            print(min([val1,val2]))
+        elif args[1] == self.Commands[9]:
+            print(math.pi)
+        elif args[1] == self.Commands[10]:
+            print(math.e)
+        elif args[1] == self.Commands[11]:
+            self.ShowHelp()
+        return
+
+
 #コマンド機能を提供する為のクラス．
 #この機能を起動すると，無限ループになる為，同時に他の処理も行うならば非同期処理で実行するべきです．
 class MCommand(object):
@@ -52,6 +109,8 @@ class MCommand(object):
     def __init__(self) -> void:
         newmodule = MStd()
         self.IncludeNewModule(newmodule)
+        mmath = MMath()
+        self.IncludeNewModule(mmath)
         return
 
     #これを実行すると，ユーザが終了処理を行うまで繰り返されます．
