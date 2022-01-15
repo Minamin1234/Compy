@@ -18,3 +18,18 @@ class MModule(object):
                   "." +
                   cmd)
         return
+
+class MStd(MModule):
+    def __init__(self) -> void:
+        self.ModuleName = "std"
+        self.Commands = [
+            "print",
+            "help"
+            ]
+        return
+
+    def ExecuteCommand(self, args: List[str]):
+        if args[1] == self.Commands[0]:
+            print(args[2])
+        elif args[1] == self.Commands[1]:
+            self.ShowHelp()
