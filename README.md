@@ -107,3 +107,172 @@ def __init__(self) -> void:
 def ExecuteCommand(self,args:List[str]) -> void:
 def ShowHelp(self) -> void:
 ```
+
+## ユーザ定義のモジュールを定義する - How to define user's module.
+### 概要 - Overview
+```py
+import Compy
+from typing import NoReturn as void
+from typing import List
+
+
+class NEWMODULE(Compy.MModule):
+    def __init__(self):
+        self.ModuleName = "newmodule"
+        self.Commands = ["hello","foo"]
+        return
+
+    def ExecuteCommand(self,args: List[str]) -> void:
+        if args[1] == self.Commands[0]:
+            print("Hello World!")
+        elif args[1] == self.Commands[1]:
+            print("foofoofoofoofoo")
+        return
+
+newmodule = NEWMODULE()
+CmdDev = MCommand()
+CmdDev.IncludeNewModule(newmodule)
+
+CmdDev.Run()
+```
+### 解説
+ユーザ定義のモジュールを定義するには`MModule`クラスから継承します．<br>
+以下のコードが必ず記述すべき内容です．<br>
+```py
+import Compy
+from typing import NoReturn as void
+from typing import List
+
+class NEWMODULE(Compy.MModule):
+    def __init__(self):
+        self.ModuleName = ""
+        self.Commands = [""]
+        return
+
+    def ExecuteCommand(self,args: List[str]) -> void:
+        return
+```
+今回は`NEWMODULE`という名称のモジュールを定義すると仮定します．<br>
+`hello`コマンド，`foo`コマンドを定義し，"Hello World!"と"foofoofoofoofoo"をコンソール上に出力するモジュールを定義します．<br>
+* `import Compy`に加えて，`from typing import NoReturn as void`と`from typing import List`を追加します．
+```py
+import Compy
+from typing import NoReturn as void
+from typing import List
+```
+
+* `Compy.MModule`クラスから継承します．<br>
+```py
+class NEWMODULE(MModule):
+```
+
+* コンストラクタを定義します．
+```py
+class NEWMODULE(Compy.MModule):
+    def __init__(self):
+```
+
+* コンストラクタには属性(=メンバ変数)`self.ModuleName`と`self.Commands`を代入する処理を定義します．<br>
+```py
+    def __init__(self):
+        self.ModuleName = "newmodule"
+        self.Commands = ["hello","foo"]
+        return
+```
+
+* コマンドには2つのキーワードを定義しました．<br>
+```py
+self.Commands = ["hello","foo"]
+#self.Commands[0] -> "hello"
+#self.Commands[1] -> "foo"
+```
+
+* イベント`def ExecuteCommand(self,args: List[str]) -> void:`を定義します．<br>
+```py
+    def ExecuteCommand(self,args: List[str]) -> void:
+        if args[1] == self.Commands[0]:
+            print("Hello World!")
+        elif args[1] == self.Commands[1]:
+            print("foofoofoofoofoo")
+        return
+```
+コンソールから入力されたモジュール名，命令と引数の含まれるリスト`args`が渡されるので，そのリストから対象のコマンドの処理を定義します．<br>
+ここでは，"Hello World!"と"foofoofoofoofoo"を表示させる処理を定義しました．
+```py
+        if args[1] == self.Commands[0]:
+            print("Hello World!")
+        elif args[1] == self.Commands[1]:
+            print("foofoofoofoofoo")
+        return
+```
+
+* 定義したモジュールクラスをインスタンス化します．<br>
+```py
+newmodule = NEWMODULE()
+```
+
+* コマンドクラス`MCommand`もインスタンス化します．<br>
+```py
+newmodule = NEWMODULE()
+CmdDev = Compy.MCommand()
+```
+
+* `Compy.MCommand`の`IncludeNewModule()`を実行します．<br>
+引数には先ほどインスタンス化した`newmodule`を指定します．<br>
+```py
+newmodule = NEWMODULE()
+CmdDev = Compy.MCommand()
+CmdDev.IncludeNewModule(newmodule)
+```
+
+* 普段通り，`Compy.MCommand`の`Run()`を実行します．<br>
+```py
+newmodule = NEWMODULE()
+CmdDev = Compy.MCommand()
+CmdDev.IncludeNewModule(newmodule)
+
+CmdDev.Run()
+```
+
+### `help`コマンドが呼ばれた際の表示処理を定義する
+先ほどのクラス定義で加えて`def ShowHelp(self) -> void:`を定義します．<br>
+ここでは，コマンド毎の説明を出力しています．
+```py
+    def ShowHelp(self) -> void:
+        print("----------Commands----------")
+        for cmd in self.Commands:
+            print(self.ModuleName + "." + cmd)
+        return
+```
+
+### 最終結果
+```py
+import Compy
+from typing import NoReturn as void
+from typing import List
+
+class NEWMODULE(Compy.MModule):
+    def __init__(self):
+        self.ModuleName = "newmodule"
+        self.Commands = ["hello","foo"]
+        return
+
+    def ExecuteCommand(self,args: List[str]) -> void:
+        if args[1] == self.Commands[0]:
+            print("Hello World!")
+        elif args[1] == self.Commands[1]:
+            print("foofoofoofoofoo")
+        return
+
+    def ShowHelp(self) -> void:
+        print("----------Commands----------")
+        for cmd in self.Commands:
+            print(self.ModuleName + "." + cmd)
+        return
+
+newmodule = NEWMODULE()
+CmdDev = Compy.MCommand()
+CmdDev.IncludeNewModule(newmodule)
+
+CmdDev.Run()
+```
