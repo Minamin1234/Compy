@@ -12,11 +12,11 @@ class MModule(object):
         pass
 
     #(イベント)モジュールのコマンドを実行します．
-    def ExecuteCommand(self,args:List[str]):
+    def ExecuteCommand(self,args:List[str]) -> void:
         pass
 
     #(イベント)モジュールのコマンド一覧を表示します．
-    def ShowHelp(self):
+    def ShowHelp(self) -> void:
         print("----------Commands----------")
         for cmd in self.Commands:
             print(self.ModuleName + 
@@ -34,7 +34,7 @@ class MStd(MModule):
             ]
         return
 
-    def ExecuteCommand(self, args: List[str]):
+    def ExecuteCommand(self, args: List[str]) -> void:
         if args[1] == self.Commands[0]:
             print(args[2])
         elif args[1] == self.Commands[1]:
