@@ -1,21 +1,22 @@
 from typing import NoReturn as void
 from typing import List
+import math
 
-#ƒRƒ}ƒ“ƒh‚Éƒ‚ƒWƒ…[ƒ‹‚ð‘g‚Ýž‚Þˆ×‚ÌŠg’£‰Â”\‚ÈŠî’êƒNƒ‰ƒX
+#ã‚³ãƒžãƒ³ãƒ‰ã«ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’çµ„ã¿è¾¼ã‚€ç‚ºã®æ‹¡å¼µå¯èƒ½ãªåŸºåº•ã‚¯ãƒ©ã‚¹
 class MModule(object):
-    #ƒ‚ƒWƒ…[ƒ‹‚Ì–¼ÌDƒ‚ƒWƒ…[ƒ‹‚ðŒÄ‚Ño‚·Û‚ÌƒRƒ}ƒ“ƒh‚É‚È‚è‚Ü‚·D
+    #ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®åç§°ï¼Žãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’å‘¼ã³å‡ºã™éš›ã®ã‚³ãƒžãƒ³ãƒ‰ã«ãªã‚Šã¾ã™ï¼Ž
     ModuleName:str = "module"
-    #ƒ‚ƒWƒ…[ƒ‹‚Ì‹@”\ƒRƒ}ƒ“ƒhˆê——
+    #ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®æ©Ÿèƒ½ã‚³ãƒžãƒ³ãƒ‰ä¸€è¦§
     Commands:List[str] = []
 
     def __init__(self) -> void:
         pass
 
-    #(ƒCƒxƒ“ƒg)ƒ‚ƒWƒ…[ƒ‹‚ÌƒRƒ}ƒ“ƒh‚ðŽÀs‚µ‚Ü‚·D
+    #(ã‚¤ãƒ™ãƒ³ãƒˆ)ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®ã‚³ãƒžãƒ³ãƒ‰ã‚’å®Ÿè¡Œã—ã¾ã™ï¼Ž
     def ExecuteCommand(self,args:List[str]) -> void:
         pass
 
-    #(ƒCƒxƒ“ƒg)ƒ‚ƒWƒ…[ƒ‹‚ÌƒRƒ}ƒ“ƒhˆê——‚ð•\Ž¦‚µ‚Ü‚·D
+    #(ã‚¤ãƒ™ãƒ³ãƒˆ)ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®ã‚³ãƒžãƒ³ãƒ‰ä¸€è¦§ã‚’è¡¨ç¤ºã—ã¾ã™ï¼Ž
     def ShowHelp(self) -> void:
         print("----------Commands----------")
         for cmd in self.Commands:
@@ -24,7 +25,7 @@ class MModule(object):
                   cmd)
         return
 
-#Šî’êƒNƒ‰ƒX‚©‚çŒp³Ï‚Ý‚Ì•W€‚ÌƒRƒ}ƒ“ƒhƒ‚ƒWƒ…[ƒ‹
+#åŸºåº•ã‚¯ãƒ©ã‚¹ã‹ã‚‰ç¶™æ‰¿æ¸ˆã¿ã®æ¨™æº–ã®ã‚³ãƒžãƒ³ãƒ‰ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
 class MStd(MModule):
     def __init__(self) -> void:
         self.ModuleName = "std"
@@ -41,8 +42,64 @@ class MStd(MModule):
             self.ShowHelp()
         return
 
-#ƒRƒ}ƒ“ƒh‹@”\‚ð’ñ‹Ÿ‚·‚éˆ×‚ÌƒNƒ‰ƒXD
-#‚±‚Ì‹@”\‚ð‹N“®‚·‚é‚ÆC–³ŒÀƒ‹[ƒv‚É‚È‚éˆ×C“¯Žž‚É‘¼‚Ìˆ—‚às‚¤‚È‚ç‚Î”ñ“¯Šúˆ—‚ÅŽÀs‚·‚é‚×‚«‚Å‚·D
+class MMath(MModule):
+    def __init__(self) -> void:
+        self.ModuleName = "math"
+        self.Commands = [
+            "abs",
+            "sin",
+            "cos",
+            "tan",
+            "rad",
+            "pow",
+            "sqrt",
+            "max",
+            "min",
+            "pi",
+            "e",
+            "help"
+            ]
+        return
+
+    def ExecuteCommand(self, args: List[str]) -> void:
+        if len(args) >= 4:
+            val1:float
+            val2:float
+            print(args)
+            if args[2] != "":
+                val1 = float(args[2])
+            if args[3] != "":
+                val2 = float(args[3])
+
+        if args[1] == self.Commands[0]:
+            print(abs(val1))
+        elif args[1] == self.Commands[1]:
+            print(sin(val1))
+        elif args[1] == self.Commands[2]:
+            print(math.cos(val1))
+        elif args[1] == self.Commands[3]:
+            print(math.tan(val1))
+        elif args[1] == self.Commands[4]:
+            print(math.radians(val1))
+        elif args[1] == self.Commands[5]:
+            print(math.pow(val1,val2))
+        elif args[1] == self.Commands[6]:
+            print(math.sqrt(val1))
+        elif args[1] == self.Commands[7]:
+            print(max([val1,val2]))
+        elif args[1] == self.Commands[8]:
+            print(min([val1,val2]))
+        elif args[1] == self.Commands[9]:
+            print(math.pi)
+        elif args[1] == self.Commands[10]:
+            print(math.e)
+        elif args[1] == self.Commands[11]:
+            self.ShowHelp()
+        return
+
+
+#ã‚³ãƒžãƒ³ãƒ‰æ©Ÿèƒ½ã‚’æä¾›ã™ã‚‹ç‚ºã®ã‚¯ãƒ©ã‚¹ï¼Ž
+#ã“ã®æ©Ÿèƒ½ã‚’èµ·å‹•ã™ã‚‹ã¨ï¼Œç„¡é™ãƒ«ãƒ¼ãƒ—ã«ãªã‚‹ç‚ºï¼ŒåŒæ™‚ã«ä»–ã®å‡¦ç†ã‚‚è¡Œã†ãªã‚‰ã°éžåŒæœŸå‡¦ç†ã§å®Ÿè¡Œã™ã‚‹ã¹ãã§ã™ï¼Ž
 class MCommand(object):
     Modules:List[MModule] = []
     DefaultCommands:List[str] = ["help","quit"]
@@ -52,9 +109,11 @@ class MCommand(object):
     def __init__(self) -> void:
         newmodule = MStd()
         self.IncludeNewModule(newmodule)
+        mmath = MMath()
+        self.IncludeNewModule(mmath)
         return
 
-    #‚±‚ê‚ðŽÀs‚·‚é‚ÆCƒ†[ƒU‚ªI—¹ˆ—‚ðs‚¤‚Ü‚ÅŒJ‚è•Ô‚³‚ê‚Ü‚·D
+    #ã“ã‚Œã‚’å®Ÿè¡Œã™ã‚‹ã¨ï¼Œãƒ¦ãƒ¼ã‚¶ãŒçµ‚äº†å‡¦ç†ã‚’è¡Œã†ã¾ã§ç¹°ã‚Šè¿”ã•ã‚Œã¾ã™ï¼Ž
     def Run(self) -> void:
         while True:
             cmd:str = input()
