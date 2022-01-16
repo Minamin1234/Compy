@@ -65,7 +65,6 @@ class MMath(MModule):
         if len(args) >= 4:
             val1:float
             val2:float
-            print(args)
             if args[2] != "":
                 val1 = float(args[2])
             if args[3] != "":
@@ -74,7 +73,7 @@ class MMath(MModule):
         if args[1] == self.Commands[0]:
             print(abs(val1))
         elif args[1] == self.Commands[1]:
-            print(sin(val1))
+            print(math.sin(val1))
         elif args[1] == self.Commands[2]:
             print(math.cos(val1))
         elif args[1] == self.Commands[3]:
@@ -127,10 +126,12 @@ class MCommand(object):
     def DecodeArgs(self,words:str) -> List[str]:
         args:List[str] = [""]
         level:int = 0
+        modulefrag:bool = False
         for w in words:
-            if w == self.ModuleSprt:
+            if w == self.ModuleSprt and modulefrag == False:
                 level = level + 1
                 args.append("")
+                modulefrag = True
                 continue
             elif w == self.SprtInArgs:
                 level = level + 1
