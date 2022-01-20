@@ -1,5 +1,5 @@
 Welcome to the Compy wiki!
-# `from` Compy，`Compy.py`
+# `from` Compy，`import` Compy,`Compy.py`
 ## 概要 - About
 コマンドアプリケーション上でコマンドによる振る舞いを提供する為のクラスモジュール
 ユーザ定義のコマンドと機能の実装も可能．
