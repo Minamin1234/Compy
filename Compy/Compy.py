@@ -16,14 +16,27 @@ class MModule(object):
     def ExecuteCommand(self,args:List[str]) -> void:
         pass
 
-    #(イベント)モジュールのコマンド一覧を表示します．
+    #(イベント)コマンドの実行結果を出力しようとする際に呼ばれます。
+    def PrintString(self,value) -> void:
+        print(">>" + str(value))
+        return
+
+    #(イベント)モジュールのコマンド一覧を直接コンソール上に表示します．
     def ShowHelp(self) -> void:
-        print("----------Commands----------")
+        self.PrintString("----------Commands----------")
         for cmd in self.Commands:
-            print(self.ModuleName + 
+            self.PrintString(self.ModuleName + 
                   "." +
                   cmd)
         return
+
+    #(イベント)モジュールのコマンド一覧のリストを返します。
+    def GetHelpList(self) -> List[str]:
+        cmdlist:List[str] = []
+        cmdlist.append("----------Commands----------")
+        for cmd in self.Commands:
+            cmdlist.append(self.ModuleName + "." + cmd)
+        return cmdlist
 
 #基底クラスから継承済みの標準のコマンドモジュール
 class MStd(MModule):
@@ -37,7 +50,7 @@ class MStd(MModule):
 
     def ExecuteCommand(self, args: List[str]) -> void:
         if args[1] == self.Commands[0]:
-            print(args[2])
+            self.PrintString(args[2])
         elif args[1] == self.Commands[1]:
             self.ShowHelp()
         return
@@ -71,27 +84,27 @@ class MMath(MModule):
                 val2 = float(args[3])
 
         if args[1] == self.Commands[0]:
-            print(abs(val1))
+            self.PrintString(abs(val1))
         elif args[1] == self.Commands[1]:
-            print(math.sin(val1))
+            self.PrintString(math.sin(val1))
         elif args[1] == self.Commands[2]:
-            print(math.cos(val1))
+            self.PrintString(math.cos(val1))
         elif args[1] == self.Commands[3]:
-            print(math.tan(val1))
+            self.PrintString(math.tan(val1))
         elif args[1] == self.Commands[4]:
-            print(math.radians(val1))
+            self.PrintString(math.radians(val1))
         elif args[1] == self.Commands[5]:
-            print(math.pow(val1,val2))
+            self.PrintString(math.pow(val1,val2))
         elif args[1] == self.Commands[6]:
-            print(math.sqrt(val1))
+            self.PrintString(math.sqrt(val1))
         elif args[1] == self.Commands[7]:
-            print(max([val1,val2]))
+            self.PrintString(max([val1,val2]))
         elif args[1] == self.Commands[8]:
-            print(min([val1,val2]))
+            self.PrintString(min([val1,val2]))
         elif args[1] == self.Commands[9]:
-            print(math.pi)
+            self.PrintString(math.pi)
         elif args[1] == self.Commands[10]:
-            print(math.e)
+            self.PrintString(math.e)
         elif args[1] == self.Commands[11]:
             self.ShowHelp()
         return
@@ -122,7 +135,8 @@ class MCommand(object):
                 break
         return
 
-
+    #コンソールから入力された文字を解読し、
+    #モジュール名・コマンド名・引数含むリストを返します。
     def DecodeArgs(self,words:str) -> List[str]:
         args:List[str] = [""]
         level:int = 0
@@ -148,23 +162,32 @@ class MCommand(object):
             args[level] = args[level] + w
         return args
             
+    #指定した定義済みのモジュールを導入します。
     def IncludeNewModule(self,module:MModule) -> void:
         self.Modules.append(module)
         return
 
+    #(イベント)このクラスで文字出力される際に呼ばれます。
+    def PrintString(self,value) -> void:
+        print(">>" + str(value))
+        return
+
+    #導入された全てのモジュールのコマンド一覧を表示します。
     def ShowAllModuleCommandInfo(self) -> void:
         for module in self.Modules:
             module.ShowHelp()
         return
 
+    #このクラスの規定コマンド一覧を表示します。
     def ShowAllDefaultCommands(self) -> void:
         print("----------DefaultCommands----------")
         for cmd in self.DefaultCommands:
-            print(cmd)
+            self.PrintString(cmd)
         return
 
+    #指定した引数でコマンドを実行します。
     def ExecuteCommand(self,args:List[str]) -> void:
-        print("")
+        self.PrintString("")
         if args[0] == self.DefaultCommands[0]:
             self.ShowAllDefaultCommands()
             return
