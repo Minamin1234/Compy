@@ -135,7 +135,8 @@ class MCommand(object):
                 break
         return
 
-
+    #コンソールから入力された文字を解読し、
+    #モジュール名・コマンド名・引数含むリストを返します。
     def DecodeArgs(self,words:str) -> List[str]:
         args:List[str] = [""]
         level:int = 0
@@ -161,25 +162,30 @@ class MCommand(object):
             args[level] = args[level] + w
         return args
             
+    #指定した定義済みのモジュールを導入します。
     def IncludeNewModule(self,module:MModule) -> void:
         self.Modules.append(module)
         return
 
+    #(イベント)このクラスで文字出力される際に呼ばれます。
     def PrintString(self,value) -> void:
         print(">>" + str(value))
         return
 
+    #導入された全てのモジュールのコマンド一覧を表示します。
     def ShowAllModuleCommandInfo(self) -> void:
         for module in self.Modules:
             module.ShowHelp()
         return
 
+    #このクラスの規定コマンド一覧を表示します。
     def ShowAllDefaultCommands(self) -> void:
         print("----------DefaultCommands----------")
         for cmd in self.DefaultCommands:
             self.PrintString(cmd)
         return
 
+    #指定した引数でコマンドを実行します。
     def ExecuteCommand(self,args:List[str]) -> void:
         self.PrintString("")
         if args[0] == self.DefaultCommands[0]:
