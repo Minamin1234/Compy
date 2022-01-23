@@ -8,9 +8,16 @@ class MModule(object):
     ModuleName:str = "module"
     #モジュールの機能コマンド一覧
     Commands:List[str] = []
+    #このモジュールを所有するコマンドデバイス(型はMCommand型)
+    CommandDevice = None
 
     def __init__(self) -> void:
         pass
+
+    #このモジュールを所有するコマンドデバイスを登録します．
+    def SetCmdDev(self,newcmddev):
+        self.CommandDevice = newcmddev
+        return
 
     #(イベント)モジュールのコマンドを実行します．
     def ExecuteCommand(self,args:List[str]) -> void:
@@ -18,7 +25,7 @@ class MModule(object):
 
     #(イベント)コマンドの実行結果を出力しようとする際に呼ばれます。
     def PrintString(self,value) -> void:
-        print(">>" + str(value))
+        self.CommandDevice.PrintString(str(value))
         return
 
     #(イベント)モジュールのコマンド一覧を直接コンソール上に表示します．
@@ -120,8 +127,10 @@ class MCommand(object):
 
     def __init__(self) -> void:
         newmodule = MStd()
+        newmodule.SetCmdDev(self)
         self.IncludeNewModule(newmodule)
         mmath = MMath()
+        mmath.SetCmdDev(self)
         self.IncludeNewModule(mmath)
         return
 
