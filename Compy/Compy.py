@@ -20,7 +20,7 @@ class MModule(object):
         return
 
     #(イベント)モジュールのコマンドを実行します．
-    def ExecuteCommand(self,args:List[str]) -> void:
+    def ExecuteCommand(self,args:List[str]) -> str:
         pass
 
     #(イベント)コマンドの実行結果を出力しようとする際に呼ばれます。
@@ -29,13 +29,16 @@ class MModule(object):
         return
 
     #(イベント)モジュールのコマンド一覧を直接コンソール上に表示します．
-    def ShowHelp(self) -> void:
+    def ShowHelp(self) -> str:
+        result:str = ""
+        result += "----------Commands----------" + "\n"
         self.PrintString("----------Commands----------")
         for cmd in self.Commands:
             self.PrintString(self.ModuleName + 
                   "." +
                   cmd)
-        return
+            result += self.ModuleName + "." + cmd + "\n"
+        return result
 
     #(イベント)モジュールのコマンド一覧のリストを返します。
     def GetHelpList(self) -> List[str]:
@@ -55,12 +58,14 @@ class MStd(MModule):
             ]
         return
 
-    def ExecuteCommand(self, args: List[str]) -> void:
+    def ExecuteCommand(self, args: List[str]) -> str:
+        result:str = ""
         if args[1] == self.Commands[0]:
             self.PrintString(args[2])
+            result += args[2] + "\n"
         elif args[1] == self.Commands[1]:
-            self.ShowHelp()
-        return
+            result = self.ShowHelp()
+        return result
 
 class MMath(MModule):
     def __init__(self) -> void:
@@ -81,7 +86,8 @@ class MMath(MModule):
             ]
         return
 
-    def ExecuteCommand(self, args: List[str]) -> void:
+    def ExecuteCommand(self, args: List[str]) -> str:
+        result:str = ""
         if len(args) >= 4:
             val1:float
             val2:float
@@ -92,29 +98,40 @@ class MMath(MModule):
 
         if args[1] == self.Commands[0]:
             self.PrintString(abs(val1))
+            result = abs(val1)
         elif args[1] == self.Commands[1]:
             self.PrintString(math.sin(val1))
+            result = math.sin(val1)
         elif args[1] == self.Commands[2]:
             self.PrintString(math.cos(val1))
+            result = math.cos(val1)
         elif args[1] == self.Commands[3]:
             self.PrintString(math.tan(val1))
+            result = math.tan(val1)
         elif args[1] == self.Commands[4]:
             self.PrintString(math.radians(val1))
+            result = math.radians(val1)
         elif args[1] == self.Commands[5]:
             self.PrintString(math.pow(val1,val2))
+            result = math.pow(val1,val2)
         elif args[1] == self.Commands[6]:
             self.PrintString(math.sqrt(val1))
+            result = math.sqrt(val1)
         elif args[1] == self.Commands[7]:
             self.PrintString(max([val1,val2]))
+            result = max([val1,val2])
         elif args[1] == self.Commands[8]:
             self.PrintString(min([val1,val2]))
+            result = min([val1,val2])
         elif args[1] == self.Commands[9]:
             self.PrintString(math.pi)
+            result = math.pi
         elif args[1] == self.Commands[10]:
             self.PrintString(math.e)
+            result = math.e
         elif args[1] == self.Commands[11]:
-            self.ShowHelp()
-        return
+            result = self.ShowHelp()
+        return result
 
 
 #コマンド機能を提供する為のクラス．
@@ -189,25 +206,30 @@ class MCommand(object):
         return
 
     #このクラスの規定コマンド一覧を表示します。
-    def ShowAllDefaultCommands(self) -> void:
+    def ShowAllDefaultCommands(self) -> str:
+        result:str = ""
         print("----------DefaultCommands----------")
+        result += "----------DefaultCommands----------" + "\n"
         for cmd in self.DefaultCommands:
+            result += cmd + "\n"
             self.PrintString(cmd)
-        return
+        return result
 
     #指定した引数でコマンドを実行します。
-    def ExecuteCommand(self,args:List[str]) -> void:
+    def ExecuteCommand(self,args:List[str]) -> str:
+        result:str = ""
         self.PrintString("")
         if args[0] == self.DefaultCommands[0]:
-            self.ShowAllDefaultCommands()
-            return
+            result = self.ShowAllDefaultCommands()
+            return result
 
         for module in self.Modules:
             if args[0] == module.ModuleName:
-                module.ExecuteCommand(args)
-        return
+                result = module.ExecuteCommand(args)
+        return result
 
     #コマンドから解読・コマンドの実行までの一連の処理を行います．
-    def Execute(self,word:str):
+    def Execute(self,word:str) -> str:
         args:List[str] = self.DecodeArgs(word)
-        self.ExecuteCommand(args)
+        result:str = self.ExecuteCommand(args)
+        return result
