@@ -205,3 +205,7 @@ class MCommand(object):
             if args[0] == module.ModuleName:
                 module.ExecuteCommand(args)
         return
+
+    def Execute(self,word:str):
+        args:List[str] = self.DecodeArgs(word)
+        self.ExecuteCommand(args)
