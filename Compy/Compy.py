@@ -137,7 +137,7 @@ class MMath(MModule):
 #コマンド機能を提供する為のクラス．
 #この機能を起動すると，無限ループになる為，同時に他の処理も行うならば非同期処理で実行するべきです．
 class MCommand(object):
-    Version:str = "v5.0beta"
+    Version:str = "v5.1beta"
     Modules:List[MModule] = []
     DefaultCommands:List[str] = ["help","quit"]
     ModuleSprt:str = "."
@@ -145,10 +145,8 @@ class MCommand(object):
 
     def __init__(self) -> void:
         newmodule = MStd()
-        newmodule.SetCmdDev(self)
         self.IncludeNewModule(newmodule)
         mmath = MMath()
-        mmath.SetCmdDev(self)
         self.IncludeNewModule(mmath)
         return
 
@@ -191,6 +189,7 @@ class MCommand(object):
             
     #指定した定義済みのモジュールを導入します。
     def IncludeNewModule(self,module:MModule) -> void:
+        module.SetCmdDev(self)
         self.Modules.append(module)
         return
 
