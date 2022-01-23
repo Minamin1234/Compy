@@ -8,11 +8,13 @@ class MModule(object):
     ModuleName:str = "module"
     #モジュールの機能コマンド一覧
     Commands:List[str] = []
+    #このモジュールを所有するコマンドデバイス(型はMCommand型)
     CommandDevice = None
 
     def __init__(self) -> void:
         pass
 
+    #このモジュールを所有するコマンドデバイスを登録します．
     def SetCmdDev(self,newcmddev):
         self.CommandDevice = newcmddev
         return
