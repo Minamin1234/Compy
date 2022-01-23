@@ -206,6 +206,7 @@ class MCommand(object):
                 module.ExecuteCommand(args)
         return
 
+    #コマンドから解読・コマンドの実行までの一連の処理を行います．
     def Execute(self,word:str):
         args:List[str] = self.DecodeArgs(word)
         self.ExecuteCommand(args)
