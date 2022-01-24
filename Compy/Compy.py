@@ -2,6 +2,8 @@ from typing import NoReturn as void
 from typing import List
 import math
 
+#コマンド実行時に補助用データとして渡すデータクラス．
+#このクラスを継承して，必要なデータを定義する事によって，実行時に必要なデータを取得する事が出来る．
 class MData(object):
     Name:str = "mdata"
 
@@ -220,7 +222,7 @@ class MCommand(object):
             self.PrintString(cmd)
         return result
 
-    #指定した引数でコマンドを実行します。
+    #指定した引数でコマンドを実行します。補助データは必要が無ければ，省略する事も出来ます．
     def ExecuteCommand(self,args:List[str],data:MData=None) -> str:
         result:str = ""
         self.PrintString("")
