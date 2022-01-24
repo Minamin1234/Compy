@@ -2,6 +2,12 @@ from typing import NoReturn as void
 from typing import List
 import math
 
+class MData(object):
+    Name:str = "mdata"
+
+    def __init__(self):
+        return
+
 #コマンドにモジュールを組み込む為の拡張可能な基底クラス
 class MModule(object):
     #モジュールの名称．モジュールを呼び出す際のコマンドになります．
@@ -20,7 +26,7 @@ class MModule(object):
         return
 
     #(イベント)モジュールのコマンドを実行します．
-    def ExecuteCommand(self,args:List[str]) -> str:
+    def ExecuteCommand(self,args:List[str],data:MData=None) -> str:
         pass
 
     #(イベント)コマンドの実行結果を出力しようとする際に呼ばれます。
@@ -58,7 +64,7 @@ class MStd(MModule):
             ]
         return
 
-    def ExecuteCommand(self, args: List[str]) -> str:
+    def ExecuteCommand(self, args: List[str],data:MData=None) -> str:
         result:str = ""
         if args[1] == self.Commands[0]:
             self.PrintString(args[2])
@@ -86,7 +92,7 @@ class MMath(MModule):
             ]
         return
 
-    def ExecuteCommand(self, args: List[str]) -> str:
+    def ExecuteCommand(self, args: List[str],data:MData=None) -> str:
         result:str = ""
         if len(args) >= 4:
             val1:float
@@ -215,7 +221,7 @@ class MCommand(object):
         return result
 
     #指定した引数でコマンドを実行します。
-    def ExecuteCommand(self,args:List[str]) -> str:
+    def ExecuteCommand(self,args:List[str],data:MData=None) -> str:
         result:str = ""
         self.PrintString("")
         if args[0] == self.DefaultCommands[0]:
@@ -224,11 +230,11 @@ class MCommand(object):
 
         for module in self.Modules:
             if args[0] == module.ModuleName:
-                result = module.ExecuteCommand(args)
+                result = module.ExecuteCommand(args,data)
         return result
 
     #コマンドから解読・コマンドの実行までの一連の処理を行います．
-    def Execute(self,word:str) -> str:
+    def Execute(self,word:str,data:MData=None) -> str:
         args:List[str] = self.DecodeArgs(word)
-        result:str = self.ExecuteCommand(args)
+        result:str = self.ExecuteCommand(args,data)
         return result
