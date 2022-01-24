@@ -137,7 +137,7 @@ class MMath(MModule):
 #コマンド機能を提供する為のクラス．
 #この機能を起動すると，無限ループになる為，同時に他の処理も行うならば非同期処理で実行するべきです．
 class MCommand(object):
-    Version:str = "v5.1beta"
+    Version:str = "v6.0beta"
     Modules:List[MModule] = []
     DefaultCommands:List[str] = ["help","quit"]
     ModuleSprt:str = "."
