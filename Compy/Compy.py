@@ -2,6 +2,14 @@ from typing import NoReturn as void
 from typing import List
 import math
 
+#コマンド実行時に補助用データとして渡すデータクラス．
+#このクラスを継承して，必要なデータを定義する事によって，実行時に必要なデータを取得する事が出来る．
+class MData(object):
+    Name:str = "mdata"
+
+    def __init__(self):
+        return
+
 #コマンドにモジュールを組み込む為の拡張可能な基底クラス
 class MModule(object):
     #モジュールの名称．モジュールを呼び出す際のコマンドになります．
@@ -20,7 +28,7 @@ class MModule(object):
         return
 
     #(イベント)モジュールのコマンドを実行します．
-    def ExecuteCommand(self,args:List[str]) -> str:
+    def ExecuteCommand(self,args:List[str],data:MData=None) -> str:
         pass
 
     #(イベント)コマンドの実行結果を出力しようとする際に呼ばれます。
@@ -58,7 +66,7 @@ class MStd(MModule):
             ]
         return
 
-    def ExecuteCommand(self, args: List[str]) -> str:
+    def ExecuteCommand(self, args: List[str],data:MData=None) -> str:
         result:str = ""
         if args[1] == self.Commands[0]:
             self.PrintString(args[2])
@@ -86,7 +94,7 @@ class MMath(MModule):
             ]
         return
 
-    def ExecuteCommand(self, args: List[str]) -> str:
+    def ExecuteCommand(self, args: List[str],data:MData=None) -> str:
         result:str = ""
         if len(args) >= 4:
             val1:float
@@ -137,7 +145,7 @@ class MMath(MModule):
 #コマンド機能を提供する為のクラス．
 #この機能を起動すると，無限ループになる為，同時に他の処理も行うならば非同期処理で実行するべきです．
 class MCommand(object):
-    Version:str = "v5.1beta"
+    Version:str = "v6.0beta"
     Modules:List[MModule] = []
     DefaultCommands:List[str] = ["help","quit"]
     ModuleSprt:str = "."
@@ -214,8 +222,8 @@ class MCommand(object):
             self.PrintString(cmd)
         return result
 
-    #指定した引数でコマンドを実行します。
-    def ExecuteCommand(self,args:List[str]) -> str:
+    #指定した引数でコマンドを実行します。補助データは必要が無ければ，省略する事も出来ます．
+    def ExecuteCommand(self,args:List[str],data:MData=None) -> str:
         result:str = ""
         self.PrintString("")
         if args[0] == self.DefaultCommands[0]:
@@ -224,11 +232,11 @@ class MCommand(object):
 
         for module in self.Modules:
             if args[0] == module.ModuleName:
-                result = module.ExecuteCommand(args)
+                result = module.ExecuteCommand(args,data)
         return result
 
     #コマンドから解読・コマンドの実行までの一連の処理を行います．
-    def Execute(self,word:str) -> str:
+    def Execute(self,word:str,data:MData=None) -> str:
         args:List[str] = self.DecodeArgs(word)
-        result:str = self.ExecuteCommand(args)
+        result:str = self.ExecuteCommand(args,data)
         return result
