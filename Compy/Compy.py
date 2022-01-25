@@ -2,12 +2,22 @@ from typing import NoReturn as void
 from typing import List
 import math
 
+#
+class MResult(object):
+    Result:str = "result"
+
+    def __str__(self) -> str:
+        return self.Result
+
+    def __init__(self) -> void:
+        return
+
 #コマンド実行時に補助用データとして渡すデータクラス．
 #このクラスを継承して，必要なデータを定義する事によって，実行時に必要なデータを取得する事が出来る．
 class MData(object):
     Name:str = "mdata"
 
-    def __init__(self):
+    def __init__(self) -> void:
         return
 
 #コマンドにモジュールを組み込む為の拡張可能な基底クラス
