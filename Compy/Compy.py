@@ -86,7 +86,8 @@ class MStd(MModule):
             result += args[2] + "\n"
         elif args[1] == self.Commands[1]:
             result = self.ShowHelp()
-        return MResult(result)
+        mresult:MResult = MResult(result)
+        return mresult
 
 class MMath(MModule):
     def __init__(self) -> void:
@@ -152,13 +153,14 @@ class MMath(MModule):
             result = math.e
         elif args[1] == self.Commands[11]:
             result = self.ShowHelp().Result
-        return MResult(result)
+        mresult:MResult = MResult(result)
+        return mresult
 
 
 #コマンド機能を提供する為のクラス．
 #この機能を起動すると，無限ループになる為，同時に他の処理も行うならば非同期処理で実行するべきです．
 class MCommand(object):
-    Version:str = "v7.0beta"
+    Version:str = "v7.1beta"
     Modules:List[MModule] = []
     DefaultCommands:List[str] = ["help","quit"]
     ModuleSprt:str = "."
@@ -238,19 +240,19 @@ class MCommand(object):
 
     #指定した引数でコマンドを実行します。補助データは必要が無ければ，省略する事も出来ます．
     def ExecuteCommand(self,args:List[str],data:MData=None) -> MResult:
-        result:str = ""
+        result:MResult = MResult("")
         self.PrintString("")
         if args[0] == self.DefaultCommands[0]:
-            result = self.ShowAllDefaultCommands().Result
-            return MResult(result)
+            result = self.ShowAllDefaultCommands()
+            return result
 
         for module in self.Modules:
             if args[0] == module.ModuleName:
-                result = module.ExecuteCommand(args,data).Result
-        return MResult(result)
+                result = module.ExecuteCommand(args,data)
+        return result
 
     #コマンドから解読・コマンドの実行までの一連の処理を行います．
     def Execute(self,word:str,data:MData=None) -> MResult:
         args:List[str] = self.DecodeArgs(word)
-        result:str = self.ExecuteCommand(args,data).Result
-        return MResult(result)
+        result:MResult = self.ExecuteCommand(args,data)
+        return result
