@@ -151,7 +151,7 @@ class MMath(MModule):
             self.PrintString(math.e)
             result = math.e
         elif args[1] == self.Commands[11]:
-            result = self.ShowHelp()
+            result = self.ShowHelp().Result
         return MResult(result)
 
 
@@ -176,7 +176,8 @@ class MCommand(object):
         while True:
             cmd:str = input()
             args:List[str] = self.DecodeArgs(cmd)
-            self.ExecuteCommand(args)
+            #print(self.ExecuteCommand(args))
+            r = self.ExecuteCommand(args)
             if args[0] == "quit":
                 break
         return
@@ -240,12 +241,12 @@ class MCommand(object):
         result:str = ""
         self.PrintString("")
         if args[0] == self.DefaultCommands[0]:
-            result = self.ShowAllDefaultCommands()
+            result = self.ShowAllDefaultCommands().Result
             return MResult(result)
 
         for module in self.Modules:
             if args[0] == module.ModuleName:
-                result = module.ExecuteCommand(args,data)
+                result = module.ExecuteCommand(args,data).Result
         return MResult(result)
 
     #コマンドから解読・コマンドの実行までの一連の処理を行います．
