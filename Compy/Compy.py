@@ -2,10 +2,12 @@ from typing import NoReturn as void
 from typing import List
 import math
 
-#
+#コマンドの実行結果を格納するクラス．
+#継承を行えば，実行結果を返す際に他のデータも渡す事が可能．
 class MResult(object):
     Result:str = "result"
 
+    #print(x)などの引数に本クラスを渡せば実行結果を表示させることが出来ます．
     def __str__(self) -> str:
         return self.Result
 
